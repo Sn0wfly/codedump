@@ -1,0 +1,17 @@
+REMINDER:
+
+Please take a screenshot of the CodeDump GUI application and save it as:
+docs/codedump_gui_screenshot.png
+
+Then commit and push it to the repository to complete the README documentation.
+
+How to take the screenshot:
+1. Run the application: python codedump_gui.py
+2. Select a directory and check some files
+3. Generate a dump to show the complete interface
+4. Take a screenshot
+5. Save it to the docs folder
+6. Commit and push the change:
+   git add docs/codedump_gui_screenshot.png
+   git commit -m "Add GUI screenshot for documentation"
+   git push origin main 

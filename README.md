@@ -14,6 +14,8 @@ Or clone this repository and run:
 
 ## Usage
 
+### Command Line Interface
+
 CodeDump can be used from the command line:
 
     # Dump all code files from current directory
@@ -39,3 +41,45 @@ CodeDump automatically filters out:
 - Version control directories
 - Log files
 - Temporary files
+
+### Graphical User Interface
+
+CodeDump now includes a graphical user interface for easier interaction with the tool.
+
+#### Requirements
+
+- Python 3.6+
+- Required packages: `tkinter`, `pillow`, `pyperclip`
+
+#### Installation
+
+```bash
+# Install required packages
+pip install pillow pyperclip
+```
+
+#### Running the GUI
+
+To start the GUI application:
+
+```bash
+python codedump_gui.py
+```
+
+#### Features
+
+- **Directory Browser**: Easily navigate and select files and directories
+- **Smart Filtering**: Uses the same file filtering logic as the CLI version
+- **Interactive Selection**: Check/uncheck files and directories to include in your dump
+- **Live Preview**: View the generated output before copying
+- **Clipboard Integration**: Copy the generated dump to your clipboard with one click
+
+#### How to use:
+
+1. Click "Select Directory" to choose your project folder
+2. Navigate the file tree and check the files you want to include
+3. Click "Generate Dump" to create the code dump
+4. Review the output in the preview panel
+5. Click "Copy to Clipboard" to copy the content
+
+![CodeDump GUI](https://github.com/Sn0wfly/codedump/raw/main/docs/codedump_gui_screenshot.png)
