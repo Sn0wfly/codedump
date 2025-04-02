@@ -1,17 +1,29 @@
 REMINDER:
 
-Please take a screenshot of the CodeDump GUI application and save it as:
-docs/codedump_gui_screenshot.png
+Please take screenshots of both CodeDump GUI applications and save them as:
+1. docs/codedump_gui_screenshot.png
+2. docs/codedump_gui_advanced_screenshot.png
 
-Then commit and push it to the repository to complete the README documentation.
+Then commit and push them to the repository to complete the README documentation.
 
-How to take the screenshot:
+How to take screenshots:
+
+For the basic GUI:
 1. Run the application: python codedump_gui.py
 2. Select a directory and check some files
 3. Generate a dump to show the complete interface
 4. Take a screenshot
-5. Save it to the docs folder
-6. Commit and push the change:
-   git add docs/codedump_gui_screenshot.png
-   git commit -m "Add GUI screenshot for documentation"
-   git push origin main 
+5. Save it to the docs folder as codedump_gui_screenshot.png
+
+For the advanced GUI:
+1. Run the application: python codedump_gui_advanced.py
+2. Select a directory and check some files
+3. Make sure some files appear in the selected files list
+4. Generate a dump to show content in the preview panel
+5. Take a screenshot
+6. Save it to the docs folder as codedump_gui_advanced_screenshot.png
+
+Commit and push the changes:
+git add docs/codedump_gui_screenshot.png docs/codedump_gui_advanced_screenshot.png
+git commit -m "Add GUI screenshots for documentation"
+git push origin main 

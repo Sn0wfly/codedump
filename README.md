@@ -44,7 +44,7 @@ CodeDump automatically filters out:
 
 ### Graphical User Interface
 
-CodeDump now includes a graphical user interface for easier interaction with the tool.
+CodeDump includes graphical interfaces for easier interaction with the tool.
 
 #### Requirements
 
@@ -58,15 +58,15 @@ CodeDump now includes a graphical user interface for easier interaction with the
 pip install pillow pyperclip
 ```
 
-#### Running the GUI
+#### Basic GUI
 
-To start the GUI application:
+The basic GUI provides a simple interface to select directories, view files, and generate dumps.
 
 ```bash
 python codedump_gui.py
 ```
 
-#### Features
+##### Features
 
 - **Directory Browser**: Easily navigate and select files and directories
 - **Smart Filtering**: Uses the same file filtering logic as the CLI version
@@ -74,7 +74,7 @@ python codedump_gui.py
 - **Live Preview**: View the generated output before copying
 - **Clipboard Integration**: Copy the generated dump to your clipboard with one click
 
-#### How to use:
+##### How to use:
 
 1. Click "Select Directory" to choose your project folder
 2. Navigate the file tree and check the files you want to include
@@ -83,3 +83,31 @@ python codedump_gui.py
 5. Click "Copy to Clipboard" to copy the content
 
 ![CodeDump GUI](https://github.com/Sn0wfly/codedump/raw/main/docs/codedump_gui_screenshot.png)
+
+#### Advanced GUI
+
+The advanced GUI provides a more sophisticated interface with additional features:
+
+```bash
+python codedump_gui_advanced.py
+```
+
+##### Features
+
+- **Split-Panel Interface**: Separate panels for file tree, selected files, and preview
+- **Custom Icons**: Visual distinction between files and folders
+- **File Editor**: Ability to edit selected files directly in the application
+- **Selected Files List**: Quick overview of files included in the dump
+- **Adjustable Panels**: Resize panels using draggable dividers
+
+##### How to use:
+
+1. Click "Select Directory" to choose your project folder
+2. Navigate the file tree and check the files you want to include
+3. View selected files in the upper right panel
+4. Edit files if needed by selecting them and clicking "Edit Selected File"
+5. Click "Generate Dump" to create the code dump
+6. Review the output in the preview panel
+7. Click "Copy to Clipboard" to copy the content
+
+![CodeDump Advanced GUI](https://github.com/Sn0wfly/codedump/raw/main/docs/codedump_gui_advanced_screenshot.png)
