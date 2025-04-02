@@ -10,7 +10,7 @@ To install CodeDump, run:
 
 Or clone this repository and run:
 
-    pip install .
+    pip install -e .
 
 ## Usage
 
@@ -49,21 +49,15 @@ CodeDump includes graphical interfaces for easier interaction with the tool.
 #### Requirements
 
 - Python 3.6+
-- Required packages: `tkinter`, `pillow`, `pyperclip`
-
-#### Installation
-
-```bash
-# Install required packages
-pip install pillow pyperclip
-```
+- Required packages: `tkinter`, `pillow`, `pyperclip` (automatically installed with the package)
 
 #### Basic GUI
 
 The basic GUI provides a simple interface to select directories, view files, and generate dumps.
 
 ```bash
-python codedump_gui.py
+# Run the basic GUI
+codedump-gui-basic
 ```
 
 ##### Features
@@ -89,7 +83,8 @@ python codedump_gui.py
 The advanced GUI provides a more sophisticated interface with additional features:
 
 ```bash
-python codedump_gui_advanced.py
+# Run the advanced GUI
+codedump-gui
 ```
 
 ##### Features
