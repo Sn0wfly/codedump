@@ -309,6 +309,14 @@ class CodeDumpApp(tk.Tk):
         )
         generate_button.pack(side=tk.LEFT, padx=5)
         
+        # Generate folder structure button
+        folder_structure_button = ttk.Button(
+            bottom_frame,
+            text="Generate Folder Structure",
+            command=self.generate_folder_structure
+        )
+        folder_structure_button.pack(side=tk.LEFT, padx=5)
+        
         # Copy button
         copy_button = ttk.Button(
             bottom_frame,
@@ -1046,6 +1054,95 @@ class CodeDumpApp(tk.Tk):
             self.status_var.set(f"Directory refreshed: {os.path.basename(directory)}")
         else:
             self.status_var.set("No directory selected to refresh")
+    
+    def get_checked_folders_and_files(self, parent=''):
+        """Recursively get all checked folders and files
+        
+        Args:
+            parent: Parent node ID in the treeview (default: root)
+        
+        Returns:
+            tuple: (checked_folders, checked_files) Lists of checked folder and file paths
+        """
+        checked_folders = []
+        checked_files = []
+        
+        def collect_checked(parent_node):
+            for item_id in self.tree.get_children(parent_node):
+                tags = self.tree.item(item_id, 'tags')
+                
+                if 'checked' in tags:
+                    # Add item to appropriate list based on type
+                    if 'folder' in tags and os.path.isdir(item_id):
+                        checked_folders.append(item_id)
+                    elif 'file' in tags and os.path.isfile(item_id):
+                        checked_files.append(item_id)
+                
+                # Process children recursively
+                if self.tree.get_children(item_id):
+                    collect_checked(item_id)
+        
+        collect_checked(parent)
+        return (checked_folders, checked_files)
+    
+    def generate_folder_structure(self):
+        """Generate a text representation of the folder structure for checked items"""
+        # Get the selected directory (base path)
+        base_dir = self.selected_directory.get()
+        if not base_dir:
+            self.status_var.set("No directory selected")
+            return
+        
+        # Get checked folders and files
+        checked_folders, checked_files = self.get_checked_folders_and_files()
+        
+        # Combine both for complete structure
+        all_checked_paths = checked_folders + checked_files
+        
+        if not all_checked_paths:
+            self.show_preview_text("No items selected. Please check some folders or files in the file tree.")
+            self.status_var.set("No items selected for folder structure")
+            return
+        
+        # Sort paths for consistent output
+        all_checked_paths.sort()
+        
+        # Generate the structure
+        self.status_var.set("Generating folder structure...")
+        self.update_idletasks()
+        
+        # Create structure text
+        output = []
+        output.append(f"Folder Structure for: {base_dir}\n")
+        output.append("=" * 50 + "\n")
+        
+        # Helper function to get relative depth and path
+        def get_relative_info(path):
+            rel_path = os.path.relpath(path, base_dir)
+            depth = len(rel_path.split(os.sep)) - 1
+            return depth, rel_path
+        
+        # Generate the folder structure with indentation
+        for path in all_checked_paths:
+            if os.path.exists(path):  # Ensure the path still exists
+                depth, rel_path = get_relative_info(path)
+                indent = "    " * depth
+                
+                # Use different symbols for files and folders
+                if os.path.isdir(path):
+                    output.append(f"{indent}📁 {os.path.basename(path)}/")
+                else:
+                    output.append(f"{indent}📄 {os.path.basename(path)}")
+        
+        # Display in preview area
+        folder_structure_text = "\n".join(output)
+        self.show_preview_text(folder_structure_text)
+        
+        # Store for clipboard
+        self.dump_content = folder_structure_text
+        
+        # Update status
+        self.status_var.set(f"Folder structure generated: {len(all_checked_paths)} items")
 
 def main():
     app = CodeDumpApp()
