@@ -34,7 +34,6 @@ Repository = "https://github.com/smat-dev/codedump"
 
 [project.scripts]
 codedump = "codedump.codedump:main"
-codedump-gui-basic = "codedump.gui_basic:main"
 codedump-gui = "codedump.gui_advanced:main"
 
 [tool.setuptools]
