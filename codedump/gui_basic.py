@@ -72,6 +72,10 @@ class CodeDumpGUI:
         select_dir_button = ttk.Button(top_frame, text="Seleccionar Directorio", command=self.select_directory)
         select_dir_button.pack(side=tk.LEFT, padx=5)
         
+        # Botón para refrescar el directorio actual
+        refresh_button = ttk.Button(top_frame, text="Refrescar", command=self.refresh_directory)
+        refresh_button.pack(side=tk.LEFT, padx=5)
+        
         # Etiqueta para mostrar la ruta seleccionada
         dir_label = ttk.Label(top_frame, textvariable=self.selected_directory)
         dir_label.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
@@ -403,6 +407,55 @@ class CodeDumpGUI:
         else:
             self.status_var.set("No hay contenido para copiar. Genera un dump primero.")
             self.root.after(2000, lambda: self.status_var.set("Listo"))
+    
+    def refresh_directory(self):
+        """Refresca el directorio actual sin necesidad de volver a seleccionarlo"""
+        directory = self.selected_directory.get()
+        if directory and os.path.exists(directory):
+            self.status_var.set("Refrescando directorio...")
+            self.root.update_idletasks()  # Actualizar la interfaz
+            
+            # Repoblar el Treeview manteniendo las selecciones actuales
+            self.refresh_treeview(directory)
+            self.status_var.set(f"Directorio refrescado: {os.path.basename(directory)}")
+        else:
+            self.status_var.set("No hay directorio seleccionado para refrescar")
+    
+    def refresh_treeview(self, path):
+        """Actualiza el Treeview preservando las selecciones actuales"""
+        # Guardar las selecciones actuales
+        checked_items = []
+        
+        def collect_checked_items(parent=''):
+            for item_id in self.tree.get_children(parent):
+                tags = self.tree.item(item_id, 'tags')
+                if 'checked' in tags:
+                    checked_items.append(item_id)
+                
+                if self.tree.get_children(item_id):
+                    collect_checked_items(item_id)
+        
+        collect_checked_items()
+        
+        # Repoblar el Treeview
+        self.populate_treeview(path)
+        
+        # Restaurar las selecciones que aún existen
+        for item_id in checked_items:
+            if os.path.exists(item_id) and self.tree.exists(item_id):
+                # Obtener las etiquetas actuales y el texto
+                tags = list(self.tree.item(item_id, 'tags'))
+                current_text = self.tree.item(item_id, 'text')
+                item_name = current_text[2:]  # Quitar el símbolo de checkbox
+                
+                # Actualizar a checked
+                if 'unchecked' in tags:
+                    tags.remove('unchecked')
+                if 'checked' not in tags:
+                    tags.append('checked')
+                
+                # Actualizar el item
+                self.tree.item(item_id, text=f"☑ {item_name}", tags=tags)
 
 def main():
     root = tk.Tk()

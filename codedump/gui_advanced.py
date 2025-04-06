@@ -151,6 +151,14 @@ class CodeDumpApp(tk.Tk):
         )
         select_dir_button.pack(side=tk.LEFT, padx=5)
         
+        # Refresh button
+        refresh_button = ttk.Button(
+            top_frame,
+            text="Refresh",
+            command=self.refresh_directory
+        )
+        refresh_button.pack(side=tk.LEFT, padx=5)
+        
         # Directory path label
         dir_label = ttk.Label(
             top_frame,
@@ -975,6 +983,69 @@ class CodeDumpApp(tk.Tk):
                 self.status_var.set(f"Navigated to: {section_name}")
         except Exception as e:
             self.status_var.set(f"Error navigating to section: {str(e)}")
+    
+    def refresh_directory(self):
+        """Refresh the current directory without reselecting it"""
+        directory = self.selected_directory.get()
+        if directory and os.path.exists(directory):
+            # Save currently checked items
+            checked_items = []
+            
+            def collect_checked_items(parent=''):
+                for item_id in self.tree.get_children(parent):
+                    tags = self.tree.item(item_id, 'tags')
+                    if 'checked' in tags:
+                        checked_items.append(item_id)
+                    
+                    if self.tree.get_children(item_id):
+                        collect_checked_items(item_id)
+            
+            # Start collecting from the root node
+            collect_checked_items()
+            
+            # Update status
+            self.status_var.set("Refreshing directory...")
+            self.update_idletasks()
+            
+            # Clear the treeview
+            for item in self.tree.get_children():
+                self.tree.delete(item)
+            
+            # Repopulate the tree
+            root_dir = os.path.basename(directory)
+            if not root_dir:  # If it's the root directory
+                root_dir = directory
+                
+            root_node = self.tree.insert('', 'end', iid=directory, 
+                                         text=f"☐ {root_dir}",
+                                         tags=('unchecked', 'folder'), 
+                                         open=True,
+                                         image=self.folder_icon if self.use_icons else '')
+            
+            # Populate starting from the root node
+            self.populate_treeview(directory, parent_node=root_node)
+            
+            # Restore checked items that still exist
+            for item_id in checked_items:
+                if os.path.exists(item_id) and self.tree.exists(item_id):
+                    # Get current tags and text
+                    tags = list(self.tree.item(item_id, 'tags'))
+                    current_text = self.tree.item(item_id, 'text')
+                    item_name = current_text[2:]  # Remove checkbox symbol
+                    
+                    # Update to checked
+                    if 'unchecked' in tags:
+                        tags.remove('unchecked')
+                    if 'checked' not in tags:
+                        tags.append('checked')
+                    
+                    # Update item
+                    self.tree.item(item_id, text=f"☑ {item_name}", tags=tags)
+            
+            # Update status
+            self.status_var.set(f"Directory refreshed: {os.path.basename(directory)}")
+        else:
+            self.status_var.set("No directory selected to refresh")
 
 def main():
     app = CodeDumpApp()
