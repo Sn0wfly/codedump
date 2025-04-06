@@ -68,6 +68,7 @@ The graphical interface includes these features:
 - **Selected Files List**: Quick overview of files included in the dump
 - **Adjustable Panels**: Resize panels using draggable dividers
 - **Refresh Button**: Reload the current directory to pick up newly added or modified files without having to reselect the directory
+- **Folder Structure Generator**: Create a visual representation of your folder structure with proper indentation, showing only the selected files and folders
 
 ##### How to use:
 
@@ -76,7 +77,7 @@ The graphical interface includes these features:
 3. View selected files in the upper right panel
 4. Edit files if needed by selecting them and clicking "Edit Selected File"
 5. If files change, use the "Refresh" button to update the directory view
-6. Click "Generate Dump" to create the code dump
+6. Click "Generate Dump" to create the code dump with full file contents, or "Generate Folder Structure" to create a lightweight directory tree view
 7. Review the output in the preview panel
 8. Click "Copy to Clipboard" to copy the content
 
